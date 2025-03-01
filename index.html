@@ -71,7 +71,7 @@
         <thead>
             <tr>
                 <th>排名</th>
-                <th>钱包地址</th>
+                <th>钱包地址 (点击跳转 DeBank 主页)</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -108,11 +108,13 @@
 
                     if (data.items && data.items.length > 0) {
                         data.items.forEach((item) => {
+                            const debankUrl = `https://debank.com/profile/${item.wallet_address}`;
                             allAddresses.push(item.wallet_address);
+
                             const row = tableBody.insertRow();
                             row.innerHTML = `
                                 <td>${item.rank}</td>
-                                <td>${item.wallet_address}</td>
+                                <td><a href="${debankUrl}" target="_blank">${item.wallet_address}</a></td>
                                 <td><button class="copy-btn" onclick="copyToClipboard('${item.wallet_address}')">复制</button></td>
                             `;
                         });
@@ -149,7 +151,7 @@
         }
 
         document.getElementById("copyAll").addEventListener("click", () => {
-            const addresses = [...document.querySelectorAll("#resultTable tbody tr td:nth-child(2)")].map(td => td.textContent).join("\n");
+            const addresses = [...document.querySelectorAll("#resultTable tbody tr td:nth-child(2) a")].map(a => a.textContent).join("\n");
             if (addresses) {
                 navigator.clipboard.writeText(addresses).then(() => {
                     alert("已复制所有地址");
